@@ -11,8 +11,27 @@ class fileToMove():
 
 info_list = []
 info_dict = {}
-file_type_dict = dict(CR2 = 'CR2', CR3 = 'CR3', dng = 'DNG', jpg = 'JPG', jpeg = 'JPG', JPG = 'JPG', bmp = 'IMAGES',
-                      png = 'IMAGES', ico = 'IMAGES', mp4 = 'Video', MP4 = 'Video', avi = 'Video', mov = 'Video')
+file_type_dict = dict(  #PHOTOS
+                        CR2 = 'CR2', CR3 = 'CR3', dng = 'DNG',
+                        jpg = 'JPG', jpeg = 'JPG', JPG = 'JPG',
+                        bmp = 'IMAGES', png = 'IMAGES', ico = 'IMAGES',
+                        tiff = 'IMAGES', tif = 'IMAGES',
+                        #VIDEO
+                        mp4 = 'Video', MP4 = 'Video', avi = 'Video',
+                        mov = 'Video', flv = 'Video', h264 = 'Video',
+                        m4v = 'Video', mkv = 'Video', mpg = 'Video',
+                        mpeg = 'Video', swf = 'Video', vob = 'Video',
+                        wmv = 'Video',
+                        #AUDIO
+                        aif = 'Audio', cda = 'Audio', mid = 'Audio',
+                        midi = 'Audio', mp3 = 'Audio', mpa = 'Audio',
+                        ogg = 'Audio', wav = 'Audio', wma = 'Audio',
+                        wpl = 'Audio',
+                        #TEXT
+                        txt = 'MyDocuments', odt = 'MyDocuments', rtf = 'MyDocuments',
+                        doc = 'MyDocuments', docx = 'MyDocuments', pdf = 'PDF',
+                        csv = 'MyDocuments', xls = 'MyDocuments', xlsx = 'MyDocuments'
+)
 destination_path = Path("F:/Yannis/SortingDestination/")
 origin_path = Path('F:/Yannis/Photos/2019/9-2-2019/')
 
