@@ -47,48 +47,54 @@ class YansHandler(FileSystemEventHandler):
                 for cdate, path in sorted(data):
                     fl = fileToMove(os.path.basename(path), path, time.ctime(cdate))
                     info_list.append(fl)
-                    print(fl.date)
-        for filez in info_list:
-            file_date = str(filez.date).split()
-            file_name = str(filez.name).split('.')
-            file_folder = str(filez.folder)
-            if file_name[1] not in file_type_dict:
-                destination_folder3 = destination_path / 'Uncategorized'
-                FROM = file_folder
-                TO = destination_folder3 / filez.name
-                shutil.move(FROM, TO)
-            else:
-                for key, value in file_type_dict.items():
-                    if key == file_name[1]:
-                        year_exists = False
-                        month_exists = False
-                        day_exists = False
-                        destination_folder = destination_path / value
-                        for folder_year in os.listdir(destination_folder):
-                            if folder_year == file_date[4]:
-                                destination_folder_year = destination_folder / folder_year
-                                year_exists = True
-                                for folder_month in os.listdir(destination_folder_year):
-                                    if folder_month == file_date[1]:
-                                        destination_folder_month = destination_folder_year / folder_month
-                                        month_exists = True
-                                        for folder_day in os.listdir(destination_folder_month):
-                                            if folder_day == file_date[2]:
-                                                day_exists = True
-                                                FROM = file_folder
-                                                TO = destination_folder_year / folder_month / folder_day / filez.name
-                                                shutil.move(FROM, TO)
-                        if not year_exists:
-                            os.mkdir(destination_path / value / file_date[4])
-                        if not month_exists:
-                            os.mkdir(destination_path / value / file_date[4] / file_date[1])
-                        if not day_exists:
-                            os.mkdir(destination_path / value / file_date[4] / file_date[1] / file_date[2])
-                            destination_folder2 = destination_path / value / file_date[4] / file_date[1] / file_date[2]
-                            FROM = file_folder
-                            TO = destination_folder2 / filez.name
-                            shutil.move(FROM, TO)
-
+        try:
+            for filez in info_list:
+                file_date = str(filez.date).split()
+                file_name = str(filez.name).split('.')
+                file_folder = str(filez.folder)
+                if file_name[1] not in file_type_dict:
+                    destination_folder3 = destination_path / 'Uncategorized'
+                    FROM = file_folder
+                    TO = destination_folder3 / filez.name
+                    shutil.move(FROM, TO)
+                    info_list.remove(filez)
+                else:
+                    for key, value in file_type_dict.items():
+                        if key == file_name[1]:
+                            year_exists = False
+                            month_exists = False
+                            day_exists = False
+                            destination_folder = destination_path / value
+                            for folder_year in os.listdir(destination_folder):
+                                if folder_year == file_date[4]:
+                                    destination_folder_year = destination_folder / folder_year
+                                    year_exists = True
+                                    for folder_month in os.listdir(destination_folder_year):
+                                        if folder_month == file_date[1]:
+                                            destination_folder_month = destination_folder_year / folder_month
+                                            month_exists = True
+                                            for folder_day in os.listdir(destination_folder_month):
+                                                if folder_day == file_date[2]:
+                                                    day_exists = True
+                                                    FROM = file_folder
+                                                    TO = destination_folder_year / folder_month / folder_day / filez.name
+                                                    shutil.move(FROM, TO)
+                                                    info_list.remove(filez)
+                            if not year_exists:
+                                os.mkdir(destination_path / value / file_date[4])
+                            if not month_exists:
+                                os.mkdir(destination_path / value / file_date[4] / file_date[1])
+                            if not day_exists:
+                                os.mkdir(destination_path / value / file_date[4] / file_date[1] / file_date[2])
+                                destination_folder2 = destination_path / value / file_date[4] / file_date[1] / file_date[2]
+                                FROM = file_folder
+                                TO = destination_folder2 / filez.name
+                                shutil.move(FROM, TO)
+                                info_list.remove(filez)
+        except WindowsError:
+            info_list.clear()
+        except OSError:
+            info_list.clear()
 if __name__ == "__main__":
     path = str(origin_path)
     
@@ -101,7 +107,5 @@ if __name__ == "__main__":
             time.sleep(1)
     except KeyboardInterrupt:
         observer.stop()
-    except FileNotFoundError:
-        pass
     observer.join()
 
